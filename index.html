@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Animated video modal</title>
     <link rel="stylesheet" href="style.css">
+    <style></style>
 </head>
 <body>
     <div class="btn">
@@ -14,27 +14,45 @@
         <p>play video</p>
     </div>
     <div class="clip">
-        <video src="intro-short.mp4" controls=""></video>
+        <div id="player"></div>
         <b class="close">close</b>
+       <!--  <button id="fullscreen">Fullscreen</button> -->
     </div>
 
+    <script src="https://player.vimeo.com/api/player.js"></script>
     <script>
         let btn = document.querySelector('.btn');
         let clip = document.querySelector('.clip');
         let close = document.querySelector('.close');
-        let video = document.querySelector('video')
+        let player;
+
         btn.onclick = function () {
             btn.classList.add('active');
             clip.classList.add('active');
-            video.play();
-            video.currentTime = 0;
+
+            // Crear el reproductor de Vimeo
+            player = new Vimeo.Player('player', {
+                id: '873071731',
+                autoplay: true,
+                controls: true,
+                width: 1000, // Ajusta el ancho del reproductor
+                height: 750 // Ajusta la altura del reproductor
+            });
         }
+
         close.onclick = function () {
             btn.classList.remove('active');
             clip.classList.remove('active');
-            video.pause();
+
+            // Detener el video cuando se cierra la ventana modal
+            player.unload();
         }
+
+        // Agregar la funcionalidad de pantalla completa
+        let fullscreenButton = document.getElementById('fullscreen');
+        fullscreenButton.addEventListener('click', function () {
+            player.requestFullscreen();
+        });
     </script>
 </body>
-
 </html>
